@@ -1,0 +1,15 @@
+services:
+  api:
+    build: { context: ., target: api }
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET (32+ characters)}
+      DATABASE_FILE: /data/ledgerly.db
+      CORS_ORIGINS: http://localhost:8080
+    volumes: [ledgerly-data:/data]
+    restart: unless-stopped
+  web:
+    build: { context: ., target: web }
+    ports: ["8080:80"]
+    depends_on: [api]
+volumes:
+  ledgerly-data:
